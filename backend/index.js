@@ -1,4 +1,6 @@
 const app=require('./app');
-app.listen(5000,function(){
-    console.log("app run")
+require('dotenv').config();
+const port = process.env.PORT;
+app.listen(port,function(){
+    console.log(`port ${port}`)
 })

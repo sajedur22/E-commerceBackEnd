@@ -1,5 +1,7 @@
 const express=require('express');
 const router = require("./src/routes/api");
+require('dotenv').config();
+
 const app=new express();
 
 
@@ -15,14 +17,19 @@ const mongoose= require('mongoose');
 const path=require('path');
 
 //DataBase connection
-let URI="mongodb+srv://<username>:<password>@cluster0.sb8za.mongodb.net/Ecommerce?retryWrites=true&w=majority&appName=Cluster0"
-let OPTION={user:"shakil2000",pass:"shakil2000",autoIndex:true}
 
-mongoose.connect(URI,OPTION).then((res)=>{
-    console.log('DB success')
-}).catch((err)=>{
-    console.log(err);
-})
+
+const uri = process.env.MONGO_URI;
+
+const options = {
+  user: process.env.MONGO_USER,
+  pass: process.env.MONGO_PASS,
+  autoIndex: process.env.MONGO_AUTO_INDEX === 'true',
+};
+
+mongoose.connect(uri, options)
+  .then(() => console.log("MongoDB connected"))
+  .catch(err => console.error(err));
 
 //Security Middleware Implement
 app.use(cors())

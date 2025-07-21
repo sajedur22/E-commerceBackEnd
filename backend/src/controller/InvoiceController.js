@@ -1,6 +1,7 @@
 const {InvoiceListService, CreateInvoiceService, InvoiceProductListService, PaymentSuccessService, PaymentCancelService,
     PaymentFailService, PaymentIPNService
 } = require("../services/InvoiceServices");
+require('dotenv').config();
 
 exports.CreateInvoice=async (req,res)=>{
     let result=await CreateInvoiceService(req);
@@ -21,19 +22,19 @@ exports.InvoiceProductList=async (req,res)=>{
 exports.PaymentSuccess=async (req,res)=>{
     let result=await PaymentSuccessService(req);
 
-    return res.redirect("http://localhost:5173/orders");
+       return res.redirect(`${process.env.CLIENT_URL}/orders`);
 }
 
 exports.PaymentCancel=async (req,res)=>{
     let result=await PaymentCancelService(req);
 
-    return res.redirect("http://localhost:5173/orders");
+       return res.redirect(`${process.env.CLIENT_URL}/orders`);
 }
 
 exports.PaymentFail=async (req,res)=>{
     let result=await PaymentFailService(req);
 
-    return res.redirect("http://localhost:5173/orders");
+       return res.redirect(`${process.env.CLIENT_URL}/orders`);
 }
 
 exports.PaymentIPN=async (req,res)=>{
