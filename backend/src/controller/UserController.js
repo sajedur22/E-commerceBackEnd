@@ -11,7 +11,7 @@ exports.VerifyLogin=async (req,res)=>{
     if (result['status'] === "success") {
         res.cookie("token", result['token'], {
             maxAge: 365 * 24 * 60 * 60 * 1000, // ১ বছর
-            httpOnly: true,
+            httpOnly:false,
             secure: true,
             sameSite: "None"
         });
