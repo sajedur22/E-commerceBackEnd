@@ -9,12 +9,13 @@ exports.VerifyLogin=async (req,res)=>{
     let result=await VerifyOTPServise(req);
     
     if (result['status'] === "success") {
-        res.cookie("token", result['token'], {
-            maxAge: 365 * 24 * 60 * 60 * 1000, // ১ বছর
-            httpOnly:false,
-            secure: false,
-            sameSite: "Lax"
-        });
+       res.cookie("token", result['token'], {
+    maxAge: 365 * 24 * 60 * 60 * 1000,
+    httpOnly: true,       // JS থেকে access করা যাবে না, safe
+    secure: false,        // development localhost এর জন্য
+    sameSite: "Lax"       // localhost এ safe
+});
+
     }
 
 
