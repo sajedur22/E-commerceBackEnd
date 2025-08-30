@@ -13,7 +13,7 @@ exports.VerifyLogin=async (req,res)=>{
         maxAge: 365 * 24 * 60 * 60 * 1000, // ১ বছর
         httpOnly: true, 
         secure: false, 
-        sameSite: "None"     
+        sameSite: "Lax"     
 });
 
     }
@@ -26,8 +26,8 @@ exports.UserLogout=async (req,res)=>{
 res.cookie("token", "", {
   maxAge: 0,
   httpOnly: true,
-  secure: true,
-  sameSite: "None"
+  secure: false,
+  sameSite: "Lax"
 });
   return res.status(200).json({status:"success"});
 }

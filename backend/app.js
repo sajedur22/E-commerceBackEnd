@@ -11,7 +11,7 @@ const helmet=require('helmet')
 const mongoSanitize=require('express-mongo-sanitize')
 const xss=require('xss-clean')
 const hpp=require('hpp')
-const cors=require('cors')
+
 const cookieParser = require('cookie-parser');
 const mongoose= require('mongoose');
 const path=require('path');
@@ -33,22 +33,32 @@ mongoose.connect(uri, options)
 
 //Security Middleware Implement
 
+const cors = require("cors");
 
+let allowedOrigins = [];
 
-
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+if (process.env.NODE_ENV === "development") {
+  allowedOrigins = [process.env.DEV_ORIGIN];
+ 
+} else {
+  allowedOrigins = [process.env.PROD_ORIGIN];
+}
 
 app.use(cors({
   origin: function (origin, callback) {
-    // For tools like curl or Postman which have no origin
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+    if (!origin) return callback(null, true); // Postman/curl
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      console.log("❌ Blocked by CORS:", origin);
+      return callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
+
+
 
 app.use(helmet())
 app.use(mongoSanitize())
